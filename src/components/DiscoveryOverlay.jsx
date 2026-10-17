@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { UserRound } from 'lucide-react';
 import { ROUNDS, ROUND_SECONDS, rankFor } from '../hooks/useDiscovery';
 import JournalModal from './JournalModal';
+import AuthModal from './AuthModal';
 
 const glass =
   'pointer-events-auto rounded-2xl border border-slate-300/50 bg-white/75 shadow-[0_8px_28px_rgba(51,65,85,0.14)] backdrop-blur-xl';
@@ -18,10 +20,11 @@ const CSS = `
 `;
 
 export default function DiscoveryOverlay({ discovery, landmarks = [], visitedIds }) {
-  const { game, target, clue, hubs, unlockedCount, visitedCount, tier, toast, startGame, quitGame, nextRound } = discovery;
+  const { game, target, clue, hubs, unlockedCount, visitedCount, tier, toast, startGame, quitGame, nextRound, toggleVisited } = discovery;
   const [open, setOpen] = useState(false);
   const [isJournalOpen, setIsJournalOpen] = useState(false);
-  
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [traveler, setTraveler] = useState(null);
 
   const playing = game.phase === 'playing';
   const result = game.phase === 'result';
@@ -51,6 +54,15 @@ export default function DiscoveryOverlay({ discovery, landmarks = [], visitedIds
 
       {/* Passport */}
       <div className="absolute right-4 top-4 flex flex-col items-end gap-2">
+        <button
+          type="button"
+          onClick={() => setIsAuthOpen(true)}
+          className={`${glass} flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 transition hover:text-slate-900`}
+          aria-label="Open traveler profile"
+        >
+          <span className="flex size-6 items-center justify-center rounded-full bg-slate-900 text-white"><UserRound className="size-3" /></span>
+          {traveler ? 'My profile' : 'Sign in'}
+        </button>
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -179,6 +191,12 @@ export default function DiscoveryOverlay({ discovery, landmarks = [], visitedIds
         onClose={() => setIsJournalOpen(false)}
         landmarks={landmarks}
         visitedIds={visitedIds}
+        onToggleVisited={toggleVisited}
+      />
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        onSignedIn={setTraveler}
       />
     </div>
   );
