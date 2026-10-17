@@ -18,6 +18,18 @@ export default function AuthModal({ isOpen, onClose, onSignedIn }) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    try {
+      const saved = JSON.parse(localStorage.getItem('mumbai_explorer_session') || 'null');
+      if (saved?.email) setEmail(saved.email);
+      if (saved?.username) setUsername(saved.username);
+    } catch {
+      // Ignore malformed session data and let the form start cleanly.
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -30,7 +42,12 @@ export default function AuthModal({ isOpen, onClose, onSignedIn }) {
 
   const submit = (event) => {
     event.preventDefault();
-    onSignedIn?.({ email: email || 'traveler@mumbaigems.app' });
+    const session = {
+      email: email || 'traveler@mumbaigems.app',
+      username: username || email.split('@')[0] || 'Mumbai Explorer',
+    };
+    localStorage.setItem('mumbai_explorer_session', JSON.stringify(session));
+    onSignedIn?.(session);
     onClose();
   };
 
@@ -51,6 +68,7 @@ export default function AuthModal({ isOpen, onClose, onSignedIn }) {
                 <h2 className="mt-3 max-w-[320px] font-serif text-4xl leading-[.98] tracking-[-.04em] text-slate-900">{face.title}</h2>
                 <p className="mt-4 max-w-[310px] text-sm leading-6 text-slate-500">{face.copy}</p>
                 <form onSubmit={submit} className="mt-7 flex flex-col gap-3">
+                  {flipped && <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/75 px-4 py-3 focus-within:border-slate-500"><Compass className="size-4 text-slate-400" /><input required minLength={2} type="text" value={username} onChange={(event) => setUsername(event.target.value)} placeholder="Explorer name" className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400" /></label>}
                   <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/75 px-4 py-3 focus-within:border-slate-500"><Mail className="size-4 text-slate-400" /><input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400" /></label>
                   <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/75 px-4 py-3 focus-within:border-slate-500"><LockKeyhole className="size-4 text-slate-400" /><input required minLength={6} type={showPassword ? 'text' : 'password'} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Password" className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400" /><button type="button" onClick={() => setShowPassword((value) => !value)} className="text-slate-400" aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}</button></label>
                   <button type="submit" className="group mt-1 flex items-center justify-between rounded-2xl bg-slate-900 px-5 py-4 text-sm font-semibold text-white transition hover:bg-[#a16c4d]">{face.action}<ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></button>
