@@ -69,13 +69,13 @@ const FOCUS_ALTITUDE = 0.1; // when a pin is selected
 const INTRO_ALTITUDE = 1.2; // opening shot, whole city as a globe
 const MAX_PAN_DEG = 50; // soft wall: how far from the map centre the view may travel
 
-// Palette: pastel map, off-white land, slate linework
-const BACKGROUND = '#e8f4f7';
-const SEA = '#79b8c8';
-const LAND = '#f8f0d8';
-const LAND_SIDE = '#d8c99e';
-const COAST = '#6f9eaa';
-const ATMOSPHERE = '#b9e7ee';
+// Palette: a clean, monochrome white smart globe with soft graphite details.
+const BACKGROUND = '#f7f8fa';
+const SEA = '#ffffff';
+const LAND = '#ffffff';
+const LAND_SIDE = '#e4e7eb';
+const COAST = '#c2c8d0';
+const ATMOSPHERE = '#dfe4ea';
 
 // Layer heights, fractions of globe radius. Each road class gets its own height so
 // crossing roads never z-fight.
@@ -98,7 +98,7 @@ const ZONE_ALT = LAND_ALT + 0.0005; // zone tint sits just above the land cap, b
 const ZONE_FILL_ALPHA = 0.78;
 const ZONE_FILL_HOVER_ALPHA = 0.98;
 const ZONE_BORDER = '#87939f';
-const ZONE_HUES = ['#f8dca8', '#c4e7d8', '#b9dff2', '#f6c9c8', '#d7cdf5', '#f5e7b7'];
+const ZONE_HUES = ['#ffffff', '#f8fafc', '#f1f5f9', '#ffffff', '#eef2f6', '#f8fafc'];
 // Region-name zoom bands by zone area (km2): [minArea, minAlt, maxAlt, fontPx]. Big zones are
 // named from far away, small ones only up close. Labels fade over REGION_FADE_* of altitude.
 const REGION_TIERS = [
@@ -1329,12 +1329,12 @@ const MumbaiGlobe = forwardRef(function MumbaiGlobe({
     const globe = globeRef.current;
     if (!globe) return;
 
-    // Sea: the globe's own material, flat soft blue with no specular glare.
+    // Sea: a bright white globe surface with a gentle polished highlight.
     try {
       const mat = globe.globeMaterial();
       mat.color.set(SEA);
-mat.specular?.set('#d9ffff');
-    mat.shininess = 8;
+      mat.specular?.set('#ffffff');
+      mat.shininess = 18;
     } catch (e) {
       /* non-fatal */
     }
@@ -1409,7 +1409,7 @@ mat.specular?.set('#d9ffff');
           atmosphereColor={ATMOSPHERE}
           atmosphereAltitude={0.1}
           showGraticules
-          graticuleColor="rgba(255,255,255,0.22)"
+          graticuleColor="rgba(148,163,184,0.16)"
           onGlobeReady={handleGlobeReady}
           onZoom={handleZoom}
           /* Land + neighborhood zones (projected, densified) */
