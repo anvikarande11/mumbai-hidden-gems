@@ -52,7 +52,8 @@ export default function AuthModal({ isOpen, onClose, onSignedIn }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#17212b]/55 p-4 backdrop-blur-md" onClick={(event) => event.target === event.currentTarget && onClose()}>
+    <div className="pointer-events-auto fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-md" onClick={(event) => { event.stopPropagation(); if (event.target === event.currentTarget) onClose(); }} onPointerDown={(event) => event.stopPropagation()}>
+      <div onClick={(event) => event.stopPropagation()} onPointerDown={(event) => event.stopPropagation()}>
       <style>{CSS}</style>
       <div className="auth-rise auth-scene w-full max-w-[430px]">
         <div className={`auth-card relative min-h-[570px] ${flipped ? 'is-flipped' : ''}`}>
@@ -79,6 +80,7 @@ export default function AuthModal({ isOpen, onClose, onSignedIn }) {
             </section>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );

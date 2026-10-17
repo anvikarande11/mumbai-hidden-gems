@@ -70,12 +70,12 @@ const INTRO_ALTITUDE = 1.2; // opening shot, whole city as a globe
 const MAX_PAN_DEG = 50; // soft wall: how far from the map centre the view may travel
 
 // Palette: pastel map, off-white land, slate linework
-const BACKGROUND = '#e8f4f8';
-const SEA = '#c4def0';
-const LAND = '#fafaf7';
-const LAND_SIDE = '#d5dde6';
-const COAST = '#94a3b8';
-const ATMOSPHERE = '#cfe5f5';
+const BACKGROUND = '#0f172a';
+const SEA = '#0f172a';
+const LAND = '#1e293b';
+const LAND_SIDE = '#172554';
+const COAST = '#334155';
+const ATMOSPHERE = '#1d4ed8';
 
 // Layer heights, fractions of globe radius. Each road class gets its own height so
 // crossing roads never z-fight.
@@ -95,10 +95,10 @@ const MINOR_LABEL_FADE = 0.12;
 
 // Phase 2: zone shading, atlas typography and hover glow.
 const ZONE_ALT = LAND_ALT + 0.0005; // zone tint sits just above the land cap, below the roads
-const ZONE_FILL_ALPHA = 0.1;
-const ZONE_FILL_HOVER_ALPHA = 0.34;
-const ZONE_BORDER = 'rgba(100,116,139,0.38)';
-const ZONE_HUES = ['#5b9bd5', '#d9779a', '#5fb98a', '#e0a23c', '#9a82d6', '#4fb3b0', '#e58a63', '#9bb84a'];
+const ZONE_FILL_ALPHA = 0.78;
+const ZONE_FILL_HOVER_ALPHA = 0.98;
+const ZONE_BORDER = '#1e293b';
+const ZONE_HUES = ['#f59e0b', '#14b8a6', '#10b981', '#f43f5e', '#6366f1'];
 // Region-name zoom bands by zone area (km2): [minArea, minAlt, maxAlt, fontPx]. Big zones are
 // named from far away, small ones only up close. Labels fade over REGION_FADE_* of altitude.
 const REGION_TIERS = [

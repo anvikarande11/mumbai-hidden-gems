@@ -26,6 +26,8 @@ export default function App() {
         active={phase !== 'intro'}
         blind={discovery.blind}
         visitedIds={discovery.visited}
+        neighborhoods={neighborhoods}
+        autoDetectOverlays
         onLandmarkClick={discovery.handlePick}
       />
       {phase === 'map' && (
