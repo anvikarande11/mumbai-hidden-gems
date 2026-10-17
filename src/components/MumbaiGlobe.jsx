@@ -70,12 +70,12 @@ const INTRO_ALTITUDE = 1.2; // opening shot, whole city as a globe
 const MAX_PAN_DEG = 50; // soft wall: how far from the map centre the view may travel
 
 // Palette: pastel map, off-white land, slate linework
-const BACKGROUND = '#0a0f1d';
-const SEA = '#121829';
-const LAND = '#f3eee7';
-const LAND_SIDE = '#d8d0c7';
-const COAST = '#8c96a3';
-const ATMOSPHERE = '#9bb7d4';
+const BACKGROUND = '#e8f4f8';
+const SEA = '#c4def0';
+const LAND = '#fafaf7';
+const LAND_SIDE = '#d5dde6';
+const COAST = '#94a3b8';
+const ATMOSPHERE = '#cfe5f5';
 
 // Layer heights, fractions of globe radius. Each road class gets its own height so
 // crossing roads never z-fight.
@@ -95,10 +95,10 @@ const MINOR_LABEL_FADE = 0.12;
 
 // Phase 2: zone shading, atlas typography and hover glow.
 const ZONE_ALT = LAND_ALT + 0.0005; // zone tint sits just above the land cap, below the roads
-const ZONE_FILL_ALPHA = 0.78;
-const ZONE_FILL_HOVER_ALPHA = 0.98;
-const ZONE_BORDER = '#87939f';
-const ZONE_HUES = ['#f3d5c8', '#b8c0b6', '#cbe3db', '#f5d6ce', '#bcd4e6', '#e3d5ca'];
+const ZONE_FILL_ALPHA = 0.1;
+const ZONE_FILL_HOVER_ALPHA = 0.34;
+const ZONE_BORDER = 'rgba(100,116,139,0.38)';
+const ZONE_HUES = ['#5b9bd5', '#d9779a', '#5fb98a', '#e0a23c', '#9a82d6', '#4fb3b0', '#e58a63', '#9bb84a'];
 // Region-name zoom bands by zone area (km2): [minArea, minAlt, maxAlt, fontPx]. Big zones are
 // named from far away, small ones only up close. Labels fade over REGION_FADE_* of altitude.
 const REGION_TIERS = [
@@ -508,13 +508,9 @@ export const DEFAULT_PLACES = [
   { name: 'Byculla', lat: 18.9792, lng: 72.833 },
   { name: 'Worli', lat: 19.0176, lng: 72.817 },
   { name: 'Dadar', lat: 19.0178, lng: 72.8478, major: true },
-  { name: 'Matunga', lat: 19.0267, lng: 72.8553 },
   { name: 'Mahim', lat: 19.042, lng: 72.845 },
   { name: 'Bandra', lat: 19.0596, lng: 72.8295, major: true },
-  { name: 'Khar', lat: 19.0706, lng: 72.8377 },
   { name: 'Santacruz', lat: 19.081, lng: 72.841 },
-  { name: 'Andheri West', lat: 19.135, lng: 72.827 },
-  { name: 'Versova', lat: 19.13, lng: 72.814 },
   { name: 'Kurla', lat: 19.0726, lng: 72.8845, major: true },
   { name: 'Chembur', lat: 19.0522, lng: 72.8994 },
   { name: 'Ghatkopar', lat: 19.086, lng: 72.9081 },

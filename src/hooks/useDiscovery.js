@@ -124,20 +124,10 @@ const shuffled = (arr) => {
 
 export function useDiscovery(gems, globeRef) {
   const [game, dispatch] = useReducer(reducer, IDLE);
-  const [visited, setVisited] = useState(() => {
-    try {
-      return new Set(JSON.parse(localStorage.getItem('mumbai_discovered_gems') || '[]'));
-    } catch {
-      return new Set();
-    }
-  });
+  const [visited, setVisited] = useState(() => new Set());
   const [toast, setToast] = useState(null);
   const visitedRef = useRef(visited);
   const toastTimer = useRef(0);
-
-  useEffect(() => {
-    localStorage.setItem('mumbai_discovered_gems', JSON.stringify([...visited]));
-  }, [visited]);
 
   const byId = useMemo(() => new Map(gems.map((g) => [g.id, g])), [gems]);
   const hubOf = useMemo(() => new Map(gems.map((g) => [g.id, hubIdFor(g)])), [gems]);
@@ -173,21 +163,6 @@ export function useDiscovery(gems, globeRef) {
       if (hubWasLocked) showToast(`Hub unlocked: ${HUBS.find((h) => h.id === hubId).name}`);
     },
     [gems, hubOf, showToast],
-  );
-
-  const toggleVisited = useCallback(
-    (gem) => {
-      if (!gem?.id) return;
-      if (visitedRef.current.has(gem.id)) {
-        const next = new Set(visitedRef.current);
-        next.delete(gem.id);
-        visitedRef.current = next;
-        setVisited(next);
-        return;
-      }
-      markVisited(gem);
-    },
-    [markVisited],
   );
 
   // Round clock.

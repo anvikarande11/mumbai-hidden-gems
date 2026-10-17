@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DiscoveryOverlay from './components/DiscoveryOverlay';
 import IntroView from './components/IntroView';
 import MumbaiGlobe from './components/MumbaiGlobe';
@@ -11,6 +11,12 @@ export default function App() {
   const [phase, setPhase] = useState('intro'); // intro -> leaving -> map
   const discovery = useDiscovery(gemsData, globeRef);
 
+  useEffect(() => {
+    if (phase !== 'leaving') return undefined;
+    const t = setTimeout(() => setPhase('map'), 850);
+    return () => clearTimeout(t);
+  }, [phase]);
+
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#e8f4f8]">
       {/* Mounted from the start so the map is ready when the intro fades. */}
@@ -20,8 +26,6 @@ export default function App() {
         active={phase !== 'intro'}
         blind={discovery.blind}
         visitedIds={discovery.visited}
-        neighborhoods={neighborhoods}
-        autoDetectOverlays
         onLandmarkClick={discovery.handlePick}
       />
       {phase === 'map' && (
@@ -31,15 +35,7 @@ export default function App() {
           visitedIds={discovery.visited}
         />
       )}
-      {phase !== 'map' && (
-        <IntroView
-          leaving={phase === 'leaving'}
-          onEnter={() => {
-            setPhase('leaving');
-            window.setTimeout(() => setPhase('map'), 850);
-          }}
-        />
-      )}
+      {phase !== 'map' && <IntroView leaving={phase === 'leaving'} onEnter={() => setPhase('leaving')} />}
     </div>
   );
 }

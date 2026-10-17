@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react';
 import { X, BookOpen, Sparkles, MapPin, CheckCircle2, Award } from 'lucide-react';
 
-export default function JournalModal({ isOpen, onClose, landmarks = [], visitedIds = new Set(), onToggleVisited, store }) {
+export default function JournalModal({ isOpen, onClose, landmarks = [], visitedIds = new Set(), store }) {
   const activeVisitedIds = visitedIds || store?.visitedSet || new Set();
   
-  const [notes, setNotes] = useState('');
-  const [saved, setSaved] = useState(true);
+  const [notes, setNotes] = useState(() => {
+    return localStorage.getItem('mumbai_explorer_journal_notes') || '';
+  });
   const [activeTab, setActiveTab] = useState('notes');
-
-  useEffect(() => {
-    if (!isOpen) return;
-    setNotes(localStorage.getItem('mumbai_journal_notes') || localStorage.getItem('mumbai_explorer_journal_notes') || '');
-    setSaved(true);
-  }, [isOpen]);
 
   // Close on ESC keypress
   useEffect(() => {
@@ -26,15 +21,8 @@ export default function JournalModal({ isOpen, onClose, landmarks = [], visitedI
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    if (!isOpen) return undefined;
-    setSaved(false);
-    const timer = window.setTimeout(() => {
-      localStorage.setItem('mumbai_journal_notes', notes);
-      localStorage.setItem('mumbai_explorer_journal_notes', notes);
-      setSaved(true);
-    }, 350);
-    return () => window.clearTimeout(timer);
-  }, [isOpen, notes]);
+    localStorage.setItem('mumbai_explorer_journal_notes', notes);
+  }, [notes]);
 
   if (!isOpen) return null;
 
@@ -42,15 +30,13 @@ export default function JournalModal({ isOpen, onClose, landmarks = [], visitedI
   const discoveredCount = landmarks.filter(l => activeVisitedIds.has(l.id)).length;
 
   return (
-    <div
-      className="pointer-events-auto fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-md animate-fadeIn"
-      data-mg-overlay
-      aria-modal="true"
-      role="dialog"
-      onClick={(e) => { e.stopPropagation(); if (e.target === e.currentTarget) onClose(); }}
-      onPointerDown={(e) => e.stopPropagation()}
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 backdrop-blur-md p-4 animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
-      <div className="pointer-events-auto relative z-[10000] flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-slate-300/60 bg-[#fdfbf7] shadow-2xl" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+      <div className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-slate-300/60 bg-[#fdfbf7] shadow-2xl flex flex-col max-h-[85vh]">
         
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200/80 px-6 py-4 bg-[#f8f5ee]">
@@ -130,11 +116,9 @@ export default function JournalModal({ isOpen, onClose, landmarks = [], visitedI
                   {landmarks.map((landmark) => {
                     const isVisited = activeVisitedIds.has(landmark.id);
                     return (
-                      <button
-                        type="button"
+                      <div
                         key={landmark.id}
-                        onClick={() => onToggleVisited?.(landmark)}
-                        className={`flex w-full items-center justify-between p-3 rounded-xl border text-left transition ${
+                        className={`flex items-center justify-between p-3 rounded-xl border transition ${
                           isVisited
                             ? 'border-emerald-200 bg-emerald-50/50 text-slate-900'
                             : 'border-slate-200 bg-white/60 text-slate-500'
@@ -154,7 +138,7 @@ export default function JournalModal({ isOpen, onClose, landmarks = [], visitedI
                         }`}>
                           {isVisited ? 'Discovered' : 'Locked'}
                         </span>
-                      </button>
+                      </div>
                     );
                   })}
                 </div>
