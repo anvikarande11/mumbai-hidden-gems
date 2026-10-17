@@ -69,13 +69,13 @@ const FOCUS_ALTITUDE = 0.1; // when a pin is selected
 const INTRO_ALTITUDE = 1.2; // opening shot, whole city as a globe
 const MAX_PAN_DEG = 50; // soft wall: how far from the map centre the view may travel
 
-// Palette: a clean, monochrome white smart globe with soft graphite details.
-const BACKGROUND = '#f7f8fa';
-const SEA = '#ffffff';
-const LAND = '#ffffff';
-const LAND_SIDE = '#e4e7eb';
-const COAST = '#c2c8d0';
-const ATMOSPHERE = '#dfe4ea';
+// Palette: pastel map, off-white land, slate linework
+const BACKGROUND = '#0a0f1d';
+const SEA = '#121829';
+const LAND = '#f3eee7';
+const LAND_SIDE = '#d8d0c7';
+const COAST = '#8c96a3';
+const ATMOSPHERE = '#9bb7d4';
 
 // Layer heights, fractions of globe radius. Each road class gets its own height so
 // crossing roads never z-fight.
@@ -98,7 +98,7 @@ const ZONE_ALT = LAND_ALT + 0.0005; // zone tint sits just above the land cap, b
 const ZONE_FILL_ALPHA = 0.78;
 const ZONE_FILL_HOVER_ALPHA = 0.98;
 const ZONE_BORDER = '#87939f';
-const ZONE_HUES = ['#ffffff', '#f8fafc', '#f1f5f9', '#ffffff', '#eef2f6', '#f8fafc'];
+const ZONE_HUES = ['#f3d5c8', '#b8c0b6', '#cbe3db', '#f5d6ce', '#bcd4e6', '#e3d5ca'];
 // Region-name zoom bands by zone area (km2): [minArea, minAlt, maxAlt, fontPx]. Big zones are
 // named from far away, small ones only up close. Labels fade over REGION_FADE_* of altitude.
 const REGION_TIERS = [
@@ -1329,12 +1329,12 @@ const MumbaiGlobe = forwardRef(function MumbaiGlobe({
     const globe = globeRef.current;
     if (!globe) return;
 
-    // Sea: a bright white globe surface with a gentle polished highlight.
+    // Sea: the globe's own material, flat soft blue with no specular glare.
     try {
       const mat = globe.globeMaterial();
       mat.color.set(SEA);
-      mat.specular?.set('#ffffff');
-      mat.shininess = 18;
+      mat.specular?.set('#000000');
+      mat.shininess = 0;
     } catch (e) {
       /* non-fatal */
     }
@@ -1395,7 +1395,7 @@ const MumbaiGlobe = forwardRef(function MumbaiGlobe({
   const selAccent = selected ? selected.color || selKind.color : null;
 
   return (
-    <div ref={containerRef} className={`relative isolate h-full min-h-[480px] w-full overflow-hidden bg-[#e8f4f7] ${blind ? 'mg-blind' : ''} ${overlayActive || autoOverlay ? 'mg-suspended' : ''} ${className}`}>
+    <div ref={containerRef} className={`relative isolate h-full min-h-[480px] w-full overflow-hidden bg-[#e8f4f8] ${blind ? 'mg-blind' : ''} ${overlayActive || autoOverlay ? 'mg-suspended' : ''} ${className}`}>
       <style>{MARKER_CSS}</style>
       {size.width > 0 && size.height > 0 && (
         <Globe
@@ -1408,8 +1408,7 @@ const MumbaiGlobe = forwardRef(function MumbaiGlobe({
           showAtmosphere
           atmosphereColor={ATMOSPHERE}
           atmosphereAltitude={0.1}
-          showGraticules
-          graticuleColor="rgba(148,163,184,0.16)"
+          showGraticules={false}
           onGlobeReady={handleGlobeReady}
           onZoom={handleZoom}
           /* Land + neighborhood zones (projected, densified) */
@@ -1448,7 +1447,7 @@ const MumbaiGlobe = forwardRef(function MumbaiGlobe({
       </svg>
 
       {!ready && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#e8f4f7] text-xs tracking-[0.2em] text-slate-400">
+        <div className="absolute inset-0 flex items-center justify-center bg-[#e8f4f8] text-xs tracking-[0.2em] text-slate-400">
           LOADING MAP…
         </div>
       )}
