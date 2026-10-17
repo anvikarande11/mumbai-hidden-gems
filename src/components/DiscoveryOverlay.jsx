@@ -20,7 +20,7 @@ const CSS = `
 `;
 
 export default function DiscoveryOverlay({ discovery, landmarks = [], visitedIds }) {
-  const { game, target, clue, hubs, unlockedCount, visitedCount, tier, toast, startGame, quitGame, nextRound } = discovery;
+  const { game, target, clue, hubs, unlockedCount, visitedCount, tier, toast, startGame, quitGame, nextRound, toggleVisited } = discovery;
   const [open, setOpen] = useState(false);
   const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -191,6 +191,7 @@ export default function DiscoveryOverlay({ discovery, landmarks = [], visitedIds
         onClose={() => setIsJournalOpen(false)}
         landmarks={landmarks}
         visitedIds={visitedIds}
+        onToggleVisited={toggleVisited}
       />
       <AuthModal
         isOpen={isAuthOpen}

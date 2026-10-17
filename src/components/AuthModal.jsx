@@ -5,10 +5,11 @@ const CSS = `
 @keyframes auth-rise { from { opacity: 0; transform: translateY(18px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
 @keyframes auth-flip { from { transform: rotateY(0deg) } to { transform: rotateY(180deg) } }
 .auth-rise { animation: auth-rise .45s cubic-bezier(.2,.75,.2,1) both }
-.auth-scene { perspective: 1600px }
-.auth-card { transform-style: preserve-3d; transition: transform .75s cubic-bezier(.2,.75,.2,1) }
+.auth-scene { perspective: 1000px; width: min(90vw, 430px); min-height: 520px; margin: auto }
+.auth-card { position: relative; width: 100%; min-height: 520px; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.2,.75,.2,1) }
 .auth-card.is-flipped { transform: rotateY(180deg) }
-.auth-face { backface-visibility: hidden; -webkit-backface-visibility: hidden }
+.auth-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; position: absolute; inset: 0; width: 100%; min-height: 520px }
+.auth-back { transform: rotateY(180deg) }
 .auth-back { transform: rotateY(180deg) }
 @media (prefers-reduced-motion: reduce) { .auth-card { transition: none } .auth-rise { animation: none } }
 `;

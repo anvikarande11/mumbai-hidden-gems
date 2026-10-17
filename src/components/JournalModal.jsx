@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, BookOpen, Sparkles, MapPin, CheckCircle2, Award } from 'lucide-react';
 
-export default function JournalModal({ isOpen, onClose, landmarks = [], visitedIds = new Set(), store }) {
+export default function JournalModal({ isOpen, onClose, landmarks = [], visitedIds = new Set(), onToggleVisited, store }) {
   const activeVisitedIds = visitedIds || store?.visitedSet || new Set();
   
   const [notes, setNotes] = useState('');
@@ -130,9 +130,11 @@ export default function JournalModal({ isOpen, onClose, landmarks = [], visitedI
                   {landmarks.map((landmark) => {
                     const isVisited = activeVisitedIds.has(landmark.id);
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={landmark.id}
-                        className={`flex items-center justify-between p-3 rounded-xl border transition ${
+                        onClick={() => onToggleVisited?.(landmark)}
+                        className={`flex w-full items-center justify-between p-3 rounded-xl border text-left transition ${
                           isVisited
                             ? 'border-emerald-200 bg-emerald-50/50 text-slate-900'
                             : 'border-slate-200 bg-white/60 text-slate-500'
@@ -152,7 +154,7 @@ export default function JournalModal({ isOpen, onClose, landmarks = [], visitedI
                         }`}>
                           {isVisited ? 'Discovered' : 'Locked'}
                         </span>
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
